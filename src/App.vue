@@ -29,6 +29,8 @@ authenticate(store).then(() => {
     ])
   );
 });
+
+
 </script>
 <style>
 @import "style.css";
