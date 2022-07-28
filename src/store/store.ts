@@ -178,9 +178,9 @@ var rState: RegisterState = {
     paying: false
   },
   // HARDCODED
-  rfidURL: env_prod ? "http://localhost:8040" : "http://localhost:8040",
-  gm65Url: env_prod ? "http://localhost:8070" : "http://localhost:8070",
-  printUrl: env_prod ? "http://localhost:8050" : "http://localhost:8050",
+  rfidURL: env_prod ? "https://localhost:8040" : "http://localhost:8040",
+  gm65Url: env_prod ? "https://localhost:8070" : "http://localhost:8070",
+  printUrl: env_prod ? "https://localhost:8050" : "http://localhost:8050",
   setPublicKey: function (key: KeyLike) {
     exportJWK(key).then((jwkkey) => {
       this.auth.publicKey = jwkkey;

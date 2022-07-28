@@ -6,7 +6,6 @@ import type { RegisterState } from "../store/store";
 import { ErrorType, setDeviceState, SetError } from "./Error";
 import type { Customer } from "../model/mms/customer";
 import CustomerAccountVue from "./CustomerAccount.vue";
-import {fetch_ignore_ssl} from "../tools"
 import {
   getCustomerAccount,
   getCustomerAccountBalance,
@@ -18,11 +17,12 @@ const WAITFORRECONNECTTIME = 10000;
 const WAITTIME = 2000;
 let delay = DELAYDURATION;
 function getRFID(store: RegisterState) {
- fetch_ignore_ssl(store.rfidURL)
-    .then(async (result: string) => {
+  axios
+    .get(store.rfidURL)
+    .then(async (result: AxiosResponse<string | any>) => {
       setDeviceState(store, "rfid", 0);
       store.loading = true;
-      var key_uid: number = parseInt(result);
+      var key_uid: number = result.data;
       console.log(`keyUid: '${key_uid}'`);
       if (key_uid && key_uid > 0) {
         store.error = null;

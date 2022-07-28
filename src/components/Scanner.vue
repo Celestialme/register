@@ -11,7 +11,7 @@ import { ErrorType, setDeviceState, SetError } from "./Error";
 import type { Register } from "../model/mms/register";
 import type { RegisterState } from "../store/store";
 import type { Company } from "../model/mms/company";
-import {fetch_ignore_ssl} from "../tools"
+
 const errorMap = new Map();
 errorMap.set(ErrorType.E_NETWORK, 1);
 
@@ -41,13 +41,14 @@ function getCode(store: RegisterState) {
     );
     return;
   }
-  fetch_ignore_ssl(store.gm65Url + "/read")
-    .then(async (result:string) => {
+  axios
+    .get(store.gm65Url + "/read")
+    .then(async (result: AxiosResponse<string | any>) => {
       setDeviceState(store, "scanner", 0);
       sameCodeHold = false;
 
-      if (result.length > 0) {
-        if (lastCode == result) {
+      if (result.data.payload.length > 0) {
+        if (lastCode == result.data.payload) {
           sameCodeHold = true;
           if (lastCodeSince.getTime() + WAITTIME < new Date().getTime()) {
             sameCodeHold = false;
@@ -55,12 +56,12 @@ function getCode(store: RegisterState) {
           }
         }
         if (!sameCodeHold) {
-          lastCode = result;
+          lastCode = result.data.payload;
           lastCodeSince = new Date();
-          if (result.length == 36) {
+          if (result.data.payload.length == 36) {
             enrollRegister(
               {
-                tan: result,
+                tan: result.data.payload,
                 public_key: JSON.stringify(store.auth.publicKey),
               },
               store
