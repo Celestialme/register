@@ -55,9 +55,11 @@
     },
     "windows": [
       {
-        "fullscreen": false,
+        "fullscreen": true,
         "height": 800,
-        "resizable": true,
+        "resizable": false,
+        "alwaysOnTop": true,
+        "maximized":true,
         "title": "register",
         "width": 1000
       }
